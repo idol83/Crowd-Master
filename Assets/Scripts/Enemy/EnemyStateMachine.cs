@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 [RequireComponent(typeof(Rigidbody), typeof(Animator))]
-public class PlayerStateMachine : MonoBehaviour
+public class EnemyStateMachine : MonoBehaviour
 {
     [SerializeField] private State _firstState;
     private State _curentState;

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PlayerState : MonoBehaviour
+public abstract class State : MonoBehaviour
 {
     [SerializeField] protected PlayerTransition[] _transitions;
     public Rigidbody Rigidbody { get; private set; }
@@ -31,7 +31,7 @@ public abstract class PlayerState : MonoBehaviour
             enabled = false;
         }
     }
-    public PlayerState GetNextState()
+    public State GetNextState()
     {
         foreach (var transition in _transitions)
         {
