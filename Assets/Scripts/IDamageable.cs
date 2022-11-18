@@ -4,5 +4,5 @@ using UnityEngine;
 
 public interface IDamageable
 {
-    bool AplyDamage(Rigidbody rigidbody, float damage);
+    bool ApplyDamage(Rigidbody rigidbody, float damage);
 }

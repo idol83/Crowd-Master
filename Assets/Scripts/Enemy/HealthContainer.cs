@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class HealthContenier : MonoBehaviour
+public class HealthContainer : MonoBehaviour
 {
     [SerializeField] private int _health;
     public event UnityAction<int> HelthChanged;

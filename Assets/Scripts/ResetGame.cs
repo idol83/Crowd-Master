@@ -7,6 +7,7 @@ public class ResetGame : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        SceneManager.LoadScene(0);
+        if( other.TryGetComponent(out PlayerStateMachine playerStateMachine))
+            SceneManager.LoadScene(0);
     }
 }

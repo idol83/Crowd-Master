@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamageable
 {
-    public bool AplyDamage(Rigidbody rigidbody, float damage)
+    public bool ApplyDamage(Rigidbody rigidbody, float damage)
     {
-        Debug.Log("ÿõó");
+        Debug.Log("ï¿½ï¿½ï¿½");
         return true;
     }
 

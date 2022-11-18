@@ -1,16 +1,13 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.WSA;
 
 [RequireComponent(typeof(Rigidbody), typeof(Animator))]
 public class EnemyStateMachine : MonoBehaviour, IDamageable
 {
-    [SerializeField] private State _firstState;
+    [SerializeField] private EnemyState _firstState;
     [SerializeField] private BrokenState _brokenState;
-    [SerializeField] private HealthContenier _healthContenier;
-    private State _curentState;
+    [SerializeField] private HealthContainer _healthContainer;
+    private EnemyState _currentState;
     private Rigidbody _rigidbody;
     private Animator _animator;
     private float _minDamage;
@@ -18,16 +15,17 @@ public class EnemyStateMachine : MonoBehaviour, IDamageable
     public PlayerStateMachine Player { get; private set; }
     private void OnEnable()
     {
-        
+        _healthContainer.Died += OnEnemyDied;
     }
     private void OnDisable()
     {
-        
+        _healthContainer.Died -= OnEnemyDied;
     }
     private void OnEnemyDied()
     {
         enabled = false;
         _rigidbody.constraints = RigidbodyConstraints.None;
+        Died?.Invoke(this);
     }
     private void Awake()
     {
@@ -37,34 +35,35 @@ public class EnemyStateMachine : MonoBehaviour, IDamageable
     }
     private void Start()
     {
-        _curentState = _firstState;
-        _curentState.Enter(_rigidbody, _animator);
+        _currentState = _firstState;
+        _currentState.Enter(_rigidbody, _animator, Player);
     }
     private void Update()
     {
-        if (_curentState == null) return;
-        State nextState = _curentState.GetNextState();
+        if (_currentState == null) return;
+        EnemyState nextState = _currentState.GetNextState();
         if (nextState != null)
         {
             Transit(nextState);
         }
     }
-    private void Transit(State nextState)
+    private void Transit(EnemyState nextState)
     {
-        if (_curentState != null) _curentState.Exit();
-        _curentState = nextState;
-        if (_curentState != null)
+        if (_currentState != null) _currentState.Exit();
+        _currentState = nextState;
+        if (_currentState != null)
         {
-            _curentState.Enter(_rigidbody, _animator);
+            _currentState.Enter(_rigidbody, _animator, Player);
         }
     }
 
-    public bool AplyDamage(Rigidbody rigidbody, float damage)
+    public bool ApplyDamage(Rigidbody rigidbody, float damage)
     {
-        if (damage > _minDamage && _curentState != _brokenState)
+        if (damage > _minDamage && _currentState != _brokenState)
         {
-            _healthContenier.TakeDamage((int)damage);
+            _healthContainer.TakeDamage((int)damage);
             Transit(_brokenState);
+            _brokenState.ApplyDamage(rigidbody, damage);
             return true;
         }
         return false;

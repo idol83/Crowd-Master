@@ -41,7 +41,7 @@ public class HandAbility : Ability
     }
     private void OnPlayerAttack(IDamageable damageable)
     {
-        if (damageable.AplyDamage(_state.Rigidbody, _attackForce) == false)
+        if (damageable.ApplyDamage(_state.Rigidbody, _attackForce) == false)
             return;
         _state.Rigidbody.velocity /= 2;
     }
